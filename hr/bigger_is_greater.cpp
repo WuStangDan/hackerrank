@@ -27,22 +27,14 @@ string LexiGreater(const string s)
     //cout << endl;
     // Read all values into a vector.
     vector <int> word;
+    //cout << "Input ";
     for (int i = 0; i < s_len; i++) {
         word.push_back(s[i]);
-      //  cout << word[i] << " ";
+        //cout << word[i]-96 << " ";
 
     }
     //cout << endl << endl;
 
-    // Check if any single character swap is available.
-    for (int i = s_len-1; i > 1; i--) {
-        if(word[i] > word[i-1]) {
-            out[i] = s[i-1];
-            out[i-1] = s[i];
-            return out;
-        }
-    }
-    // Means no single character swap was available.
     // Check if string is in perfect order.
     bool perfect_order = true;
     for (int i = 0; i < s_len-1; i++) {
@@ -52,26 +44,37 @@ string LexiGreater(const string s)
     }
 
     if (perfect_order == false) {
-        //cout << "Perfect order was false" << endl;
-        // Put next highest character first, and rearrange the rest
-        // in perfect order.
-        int next_letter_index = 0;
-        int next_letter = 999;
-        for (int i = 1; i < s_len; i++) {
-            //cout << "comparing " << word[0] << " " << word[i] << endl;
-            if ((word[i] > word[0]) && (word[i] < next_letter)) {
-                //cout << word[i] << " passed!" << endl;
-                next_letter_index = i;
-                next_letter = word[i];
+
+        // Moving i from right to left. If there is an i where there is a letter to the right
+        // greater than i, find the lowest number that is greater than i.
+
+        int min_letter_greater = 999;
+        int min_letter_index;
+        int replaced_letter_index;
+        for (int i = s_len-2; i >= 0; i--) {
+            bool greater_found = false;
+
+            for (int j = i+1; j < s_len; j++) {
+                if (word[j] > word[i] && word[j] < min_letter_greater) {
+                    min_letter_greater = word[j];
+                    min_letter_index = j;
+                    greater_found = true;
+                }
+            }
+            if (greater_found == true) {
+                replaced_letter_index = i;
+                break;
             }
         }
-        //cout << "next letter i num " << next_letter_index << " " << next_letter << endl;
-        out[0] = s[next_letter_index];
-        out[next_letter_index] = s[0];
+
+        // Swap replaced letter with lowest letter that is greater than it.
+        out[replaced_letter_index] = s[min_letter_index];
+        out[min_letter_index] = s[replaced_letter_index];
+
 
         // Bubble sort on the rest of the values.
-        for (int i = 0; i < s_len; i++) {
-            for (int j = 1; j < s_len-1; j++) {
+        for (int i = replaced_letter_index; i < s_len; i++) {
+            for (int j = replaced_letter_index+1; j < s_len-1; j++) {
                 if(out[j] > out[j+1]) {
                     int temp = out[j+1];
                     out[j+1] = out[j];
