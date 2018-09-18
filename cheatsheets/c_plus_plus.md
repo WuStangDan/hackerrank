@@ -88,6 +88,18 @@ int main()
 
 ## Derived Classes
 ```c++
+class TestScores
+{
+  public:
+    int test1;
+    int test2;
+    void SetTestScores(int in1, int in2)
+    {
+      test1 = in1;
+      test2 = in2;
+    }
+};
+
 class TestInfo : public TestScores
 {
   public:
