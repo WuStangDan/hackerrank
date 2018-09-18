@@ -11,7 +11,7 @@ int main()
   cout << a;
   // Output: 2
   
-  // Refernces
+  // References
   int &c = a;
   c += 1;
   cout << a;
