@@ -1,5 +1,4 @@
 # C++ Cheat Sheet
-----------
 
 ## Pointers and References
 ```c++
@@ -113,6 +112,82 @@ int main()
 {
   TestInfo math;
   math.SetTestScores(90, 70);
-  cout << math.TestAverage() << endl;
+  cout << math.TestAverage();
+  // Output: 80
+}
+```
+
+## Virtual Functions
+```c++
+class BaseClass
+{
+  public:
+    void Print1()
+    {
+      cout << "Hello";
+    }
+    virtual void Print2()
+    {
+      cout << "Hello";
+    }
+};
+
+class DerivedClass : public BaseClass
+{
+  public:
+    void Print1()
+    {
+      cout << "Goodbye";
+    }
+    void Print2()
+    {
+      cout << "Goodbye";
+    }
+};
+
+int main()
+{
+  DerivedClass derived_class;
+  derived_class.Print1();
+  // Output: Goodbye
+  BaseClass *base_class_ptr;
+  base_class_ptr = new DerivedClass;
+  base_class_ptr->Print1();
+  // Output: Hello
+  base_class_ptr->Print2();
+  // Output: Goodbye
+}
+```
+
+## Iterators
+```c++
+int main()
+{
+  vector<int> v;
+  v.push_back(1);
+  v.push_back(2);
+  v.push_back(3);
+  for (vector<int>::iterator it = v.begin(); it != v.end(); it++)
+  {
+    std::cout<< *it << " ";
+  }
+  // Output: 1 2 3
+}
+```
+
+## Auto
+```c++
+int main()
+{
+  map<string, int> dog_age;
+  dog_age["Mindy"] = 12;
+  dog_age["Lexi"] = 9;
+
+  for (auto n : dog_age)
+  {
+    cout << "Dog: " << n.first << " ";
+    cout << "Age: " << n.second << ", ";
+  }
+  // Ouptut: Dog: Lexi Age: 9, Dog: Mindy Age: 12
 }
 ```
