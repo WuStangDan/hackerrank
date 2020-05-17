@@ -61,6 +61,10 @@ int main()
 }
 ```
 
+## Operator Overloading
+```c++
+
+```
 ## Templates
 ```c++
 template <typename T>
@@ -117,6 +121,78 @@ int main()
 }
 ```
 
+## Inheritance
+```c++
+class Date
+{
+  public:
+    int day = 1;
+  protected:
+    int month = 2;
+  private:
+    int year = 2020;
+};
+
+// This will import Public members as public,
+// and protected members as protected.
+class PublicInheritance : public Date
+{
+  public:
+    void NextDay() {
+      day += 1;
+    }
+    void NextMonth() {
+      month += 1;
+    }
+    /* The following creates compile error.
+     * You can't inherit private members directly.
+     * They can be accessed indirectly through bases public
+     * or protected members.
+    void NextYear() {
+      Year += 1;
+    }*/
+};
+
+// This will inherit public members as protected,
+// protected members as protected.
+class ProtectedInheritance : protected Date
+{
+};
+
+// This will inherit public and protected members as private.
+class PrivateInheritance : private Date
+{
+};
+
+class DoubleInheritProtected : public ProtectedInheritance
+{
+  void NextDay() {
+    day += 1;
+  }
+};
+
+class DoubleInheritPrivate : public PrivateInheritance
+{
+  /* The following creates a compile error.
+  void NextDay() {
+    day += 1;
+  }*/
+};
+
+int main()
+{
+  Date date;
+  cout << date.day << endl; // Output: 1
+  /* The following creates a compile error.
+  cout << date.month << endl; */
+  PublicInheritance public_date;
+  cout << public_date.day << endl; // Output: 1
+  ProtectedInheritance protected_date;
+  /* The following creates a compile error.
+  cout << protected_date.day << endl; */
+}
+```
+
 ## Virtual Functions
 ```c++
 class BaseClass
@@ -124,11 +200,11 @@ class BaseClass
   public:
     void Print1()
     {
-      cout << "Hello";
+      cout << "BaseClass1" << endl;
     }
-    virtual void Print2()
+    virtual void Print2();
     {
-      cout << "Hello";
+      cout << "BaseClass2" << endl;
     }
 };
 
@@ -137,11 +213,11 @@ class DerivedClass : public BaseClass
   public:
     void Print1()
     {
-      cout << "Goodbye";
+      cout << "DerivedClass1" << endl;
     }
     void Print2()
     {
-      cout << "Goodbye";
+      cout << "DerivedClass2" << endl;
     }
 };
 
@@ -149,13 +225,17 @@ int main()
 {
   DerivedClass derived_class;
   derived_class.Print1();
-  // Output: Goodbye
+  // Output: DerivedClass1
+  derived_class.Print2();
+  // Output: DerivedClass2
   BaseClass *base_class_ptr;
   base_class_ptr = new DerivedClass;
   base_class_ptr->Print1();
-  // Output: Hello
+  // Output: BaseClass1
+  // This is because BaseClass1 is binded at compile time.
   base_class_ptr->Print2();
-  // Output: Goodbye
+  // Output: DerivedClass2
+  // Meanwhile this function is binded at runtime.
 }
 ```
 
