@@ -238,6 +238,36 @@ int main()
   // Meanwhile this function is binded at runtime.
 }
 ```
+## Pure Virtual Functions
+```c++
+class BaseClass
+{
+  public:
+    virtual void Print() = 0;
+};
+
+class DerivedClass : public BaseClass
+{
+  public:
+    void Print()
+    {
+      cout << "1" << endl;
+    }
+};
+
+class DerivedClass2 : public BaseClass
+{
+};
+
+int main()
+{
+  DerivedClass derived_class;
+  derived_class.Print();
+  // Output: 1
+  DerivedClass2 derived_class2;
+  // Output: Compile error - unimplemented pure virtual method 'Print' in 'DerivedClass2'.
+}
+```
 
 ## Iterators
 ```c++
